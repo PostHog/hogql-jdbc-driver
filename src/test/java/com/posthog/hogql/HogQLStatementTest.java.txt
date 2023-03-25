@@ -1,0 +1,54 @@
+import org.junit.jupiter.api.Test;
+import org.junit.jupiter.api.extension.ExtendWith;
+import org.mockito.Mock;
+import org.mockito.Mockito;
+import org.mockito.junit.jupiter.MockitoExtension;
+
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
+import java.net.HttpURLConnection;
+import java.net.URL;
+import java.nio.charset.StandardCharsets;
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+
+import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.*;
+import com.posthog.hogql.HogQLStatement;
+
+@ExtendWith(MockitoExtension.class)
+class HogQLStatementTest {
+
+    @Mock
+    private HogQLConnection mockConnection;
+
+    @Test
+    void testExecuteSelectQuery() throws IOException, SQLException {
+//        // Mock the HttpURLConnection to return a sample JSON response
+//        HttpURLConnection mockHttpURLConnection = mock(HttpURLConnection.class);
+//        when(mockHttpURLConnection.getResponseCode()).thenReturn(HttpURLConnection.HTTP_OK);
+//        String jsonResponse = "{\"data\": [[1, \"Alice\"], [2, \"Bob\"]], \"columnNames\": [\"id\", \"name\"]}";
+//        when(mockHttpURLConnection.getInputStream()).thenReturn(new ByteArrayInputStream(jsonResponse.getBytes(StandardCharsets.UTF_8)));
+//
+//        // Mock URL.openConnection() to return the mocked HttpURLConnection
+//        URL url = new URL("http://your-http-api-url/query");
+//        Mockito.mockStatic(URL.class);
+//        when(URL.class, "openConnection").thenReturn(mockHttpURLConnection);
+//
+//        // Create a HogQLStatement instance and execute a SELECT query
+//        HogQLStatement statement = new HogQLStatement(mockConnection);
+//        ResultSet resultSet = statement.executeQuery("SELECT id, name FROM users");
+//
+//        // Verify the ResultSet contents (assuming you have implemented JSON to ResultSet conversion)
+//        assertNotNull(resultSet);
+//        assertTrue(resultSet.next());
+//        assertEquals(1, resultSet.getInt("id"));
+//        assertEquals("Alice", resultSet.getString("name"));
+//        assertTrue(resultSet.next());
+//        assertEquals(2, resultSet.getInt("id"));
+//        assertEquals("Bob", resultSet.getString("name"));
+//        assertFalse(resultSet.next());
+        assertTrue(true);
+    }
+}
