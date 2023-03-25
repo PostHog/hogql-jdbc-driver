@@ -1,6 +1,6 @@
 # PostHog HogQL JDBC Driver
 
-Still WIP
+<img width="1222" alt="image" src="https://user-images.githubusercontent.com/53387/227744220-a5f44d41-a657-4ad6-856f-fdfd4d63dfaf.png">
 
 ## Usage
 
@@ -14,6 +14,6 @@ Then:
 
 ## Note
 
-This is still very much a work in progress. For example the API URL is encoded in the query.
+This is still very much a work in progress. For example the API URL and a (development) private key are encoded in the code.
 
 However it at least works for making SQL queries inside PyCharm.
