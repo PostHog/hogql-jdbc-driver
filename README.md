@@ -15,3 +15,5 @@ Then:
 ## Note
 
 This is still very much a work in progress. For example the API URL is encoded in the query.
+
+However it at least works for making SQL queries inside PyCharm.
