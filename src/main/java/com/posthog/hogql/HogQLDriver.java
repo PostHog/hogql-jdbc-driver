@@ -3,7 +3,6 @@ package com.posthog.hogql;
 import java.sql.*;
 import java.util.Properties;
 import java.util.logging.Logger;
-import java.util.TimeZone;
 
 public class HogQLDriver implements java.sql.Driver {
 

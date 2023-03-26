@@ -1,10 +1,10 @@
+package com.posthog.hogql;
+
 import org.junit.jupiter.api.Test;
 
 import java.sql.Driver;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-
-import com.posthog.hogql.HogQLDriver;
 
 import static org.junit.jupiter.api.Assertions.*;
 

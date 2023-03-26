@@ -1,7 +1,5 @@
 package com.posthog.hogql.response;
-import com.posthog.hogql.response.HogQLQueryResponse;
 import com.google.gson.Gson;
-import com.mockrunner.jdbc.JDBCTestModule;
 import com.mockrunner.mock.jdbc.MockResultSet;
 import java.io.InputStream;
 import java.io.IOException;
