@@ -10,7 +10,7 @@ import java.util.HashMap;
 import java.util.AbstractMap.SimpleImmutableEntry;
 import com.posthog.hogql.response.AbstractResultSet;
 import com.posthog.hogql.response.JSONToResultSet;
-import com.posthog.hogql.settings.ClickHouseProperties;
+import com.posthog.hogql.settings.HogQLProperties;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import com.google.gson.Gson;
@@ -26,14 +26,14 @@ public class HogQLStatement implements java.sql.Statement {
     private int maxRows;
     private volatile String queryId;
     private AbstractResultSet currentResult;
-    private ClickHouseProperties properties;
+    private HogQLProperties properties;
     private final String initialDatabase;
     private static final String[] selectKeywords = new String[]{"SELECT", "WITH", "SHOW", "DESC", "EXISTS"};
     private static final String databaseKeyword = "CREATE DATABASE";
 
     public HogQLStatement(HogQLConnection connection) {
         this.connection = connection;
-        this.properties = new ClickHouseProperties();
+        this.properties = new HogQLProperties();
         this.initialDatabase = this.properties.getDatabase();
     }
 
@@ -54,7 +54,7 @@ public class HogQLStatement implements java.sql.Statement {
                 Map<String, Object> queryMap = new HashMap<>();
                 queryMap.put("kind", "HogQLQuery");
                 queryMap.put("query", sql);
-                this.queryId = UniqueIdUtil.generateQueryId();
+                this.queryId = UniqueId.generateQueryId();
                 Map<String, Object> payloadMap = new HashMap<>();
                 payloadMap.put("query", queryMap);
                 String payload = new Gson().toJson(payloadMap);

@@ -2,9 +2,9 @@ package com.posthog.hogql;
 import java.security.SecureRandom;
 import java.util.Base64;
 
-public final class UniqueIdUtil {
+public final class UniqueId {
 
-    private UniqueIdUtil() {
+    private UniqueId() {
     }
 
     //threadsafe
