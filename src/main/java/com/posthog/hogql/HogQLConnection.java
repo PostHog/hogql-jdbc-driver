@@ -8,19 +8,46 @@ import java.util.TimeZone;
 
 public class HogQLConnection implements java.sql.Connection {
 
-//     private final HttpConnector httpConnector;
-    private final String url;
-    private final Properties info;
     private int networkTimeout;
-    private String schema;
     private boolean closed = false;
-    private static final int DEFAULT_RESULTSET_TYPE = ResultSet.TYPE_FORWARD_ONLY;
+    private String apiUrl;
+    private String apiKey;
 
     public HogQLConnection(String url, Properties info) {
-        this.url = url;
-        this.info = info;
         this.networkTimeout = 60;
-        this.schema = "schema...";
+
+        if (!url.startsWith("jdbc:hogql://")) {
+            return;
+        }
+
+        String[] chunks = url.split("/");
+        if (chunks.length < 4) {
+            return;
+        }
+
+        String host = chunks[2], user = info.getProperty("user"), project = chunks[3], port = "443";
+        if (host.length() == 0 || project.length() == 0) {
+            return;
+        }
+
+        String[] userSplit = host.split("@");
+        if (userSplit.length > 1) {
+            user = userSplit[0];
+            host = userSplit[1];
+        }
+
+        if (user == null) {
+            return;
+        }
+
+        String[] portSplit = host.split(":");
+        if (portSplit.length > 1) {
+            host = portSplit[0];
+            port = portSplit[1];
+        }
+
+        this.apiKey = user;
+        this.apiUrl = (port.endsWith("443") ? "https://" : "http://") + host + (port.equals("443") ? "" : ":" + port) + "/api/projects/"+project+"/query";
     }
 
     @Override
@@ -44,12 +71,11 @@ public class HogQLConnection implements java.sql.Connection {
 
     @Override
     public String getSchema() {
-        return this.schema;
+        return null;
     }
 
     @Override
     public void setSchema(String schema) {
-        this.schema = schema;
     }
 
     @Override
@@ -318,4 +344,11 @@ public class HogQLConnection implements java.sql.Connection {
         throw new SQLException("Cannot unwrap to " + iface.getName());
     }
 
+    public String getApiUrl() {
+        return apiUrl; // "http://localhost:8000/api/projects/1/query";
+    }
+
+    public String getApiKey() {
+        return apiKey; // "phx_zBXe4XYk4UV5Rg4k0zZXcodlokNpiX4aHkWly7oaYwq";
+    }
 }

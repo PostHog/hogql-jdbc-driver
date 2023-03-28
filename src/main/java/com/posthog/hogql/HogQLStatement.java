@@ -27,27 +27,22 @@ public class HogQLStatement implements java.sql.Statement {
     private volatile String queryId;
     private AbstractResultSet currentResult;
     private HogQLProperties properties;
-    private final String initialDatabase;
-    private static final String[] selectKeywords = new String[]{"SELECT", "WITH", "SHOW", "DESC", "EXISTS"};
-    private static final String databaseKeyword = "CREATE DATABASE";
 
     public HogQLStatement(HogQLConnection connection) {
         this.connection = connection;
         this.properties = new HogQLProperties();
-        this.initialDatabase = this.properties.getDatabase();
     }
 
     @Override
     public ResultSet executeQuery(String sql) throws SQLException {
         if (sql.trim().toLowerCase().startsWith("select")) {
-            String apiUrl = "http://localhost:8000/api/projects/1/query"; // Replace with your API URL
-
+            String apiUrl = this.connection.getApiUrl();
             try {
                 URL url = new URL(apiUrl);
                 HttpURLConnection connection = (HttpURLConnection) url.openConnection();
                 connection.setRequestMethod("POST");
                 connection.setRequestProperty("Content-Type", "application/json");
-                connection.setRequestProperty("Authorization", "Bearer phx_zBXe4XYk4UV5Rg4k0zZXcodlokNpiX4aHkWly7oaYwq");
+                connection.setRequestProperty("Authorization", "Bearer " + this.connection.getApiKey());
                 connection.setDoOutput(true);
 
                 // Send the SELECT query as JSON payload
@@ -68,7 +63,6 @@ public class HogQLStatement implements java.sql.Statement {
                     InputStream is = connection.getInputStream();
                     return JSONToResultSet.inputStreamToResultSet(is);
                 } else {
-                    System.out.println(responseCode);
                     throw new SQLException("Failed to execute SELECT query via PostHog HTTP API. Error code: " + responseCode + "");
                 }
             } catch (IOException e) {
@@ -301,44 +295,11 @@ public class HogQLStatement implements java.sql.Statement {
         return iface.isAssignableFrom(getClass());
     }
 
-    private static String toParamsString(List<SimpleImmutableEntry<String, String>> queryParams) {
-        if (queryParams.isEmpty()) {
-            return null;
-        }
-        StringBuilder sb = new StringBuilder();
-        for (SimpleImmutableEntry<String, String> pair : queryParams) {
-            sb.append(pair.getKey()).append("=").append(pair.getValue())
-                    .append("&");
-        }
-        sb.setLength(sb.length() - 1); //remove last &
-        return sb.toString();
-    }
-
     public void closeOnCompletion() {
         closeOnCompletion = true;
     }
 
     public boolean isCloseOnCompletion() {
         return closeOnCompletion;
-    }
-
-    private static boolean detectQueryType(String sql) {
-        for (int i = 0; i < sql.length(); i++) {
-            String nextTwo = sql.substring(i, Math.min(i + 2, sql.length()));
-            if ("--".equals(nextTwo)) {
-                i = Math.max(i, sql.indexOf("\n", i));
-            } else if ("/*".equals(nextTwo)) {
-                i = Math.max(i, sql.indexOf("*/", i));
-            } else if (Character.isLetter(sql.charAt(i))) {
-                String trimmed = sql.substring(i, Math.min(sql.length(), Math.max(i, sql.indexOf(" ", i))));
-                for (String keyword : selectKeywords) {
-                    if (trimmed.regionMatches(true, 0, keyword, 0, keyword.length())) {
-                        return true;
-                    }
-                }
-                return false;
-            }
-        }
-        return false;
     }
 }

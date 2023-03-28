@@ -4,6 +4,22 @@
 
 ## Usage
 
+Connect the connector's JAR to your JDBC client, and use a URL with the following structure:
+
+```text
+jdbc:hogql://PERSONAL_API_KEY@app.posthog.com/PROJECT_ID/
+```
+
+or 
+
+```text
+jdbc:hogql://PERSONAL_API_KEY@localhost:8080/PROJECT_ID/
+```
+
+Omitting a port, or specifying one with 443 will use HTTPS. Any other port will use HTTP.
+
+## Developing
+
 ```bash
 mvn clean && mvn compile && mvn package && mvn exec:java
 ```

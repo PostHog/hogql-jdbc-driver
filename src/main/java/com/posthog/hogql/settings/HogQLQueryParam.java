@@ -4,6 +4,8 @@ import java.util.Properties;
 
 public enum HogQLQueryParam {
 
+    HOST("host", null, String.class),
+
     DATABASE("database", null, String.class),
 
     PASSWORD("password", null, String.class),
@@ -35,17 +37,5 @@ public enum HogQLQueryParam {
     @Override
     public String toString() {
         return name().toLowerCase();
-    }
-
-    private String[] driverPropertyInfoChoices() {
-        return clazz == Boolean.class || clazz == Boolean.TYPE ? new String[]{"true", "false"} : null;
-    }
-
-    private String driverPropertyValue(Properties properties) {
-        String value = properties.getProperty(key);
-        if (value == null) {
-            value = defaultValue == null ? null : defaultValue.toString();
-        }
-        return value;
     }
 }

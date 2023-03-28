@@ -9,8 +9,6 @@ public class HogQLProperties {
 
     // connection settings
     private String host;
-//    private String personalApiKey;
-//    private int teamId;
 
     // queries settings
     private String database;
@@ -22,24 +20,10 @@ public class HogQLProperties {
     }
 
     public HogQLProperties(Properties info) {
+        this.host = getSetting(info, HogQLQueryParam.HOST);
         this.database = getSetting(info, HogQLQueryParam.DATABASE);
         this.user = getSetting(info, HogQLQueryParam.USER);
         this.password = getSetting(info, HogQLQueryParam.PASSWORD);
-    }
-
-    public Map<HogQLQueryParam, String> buildQueryParams(boolean ignoreDatabase) {
-        Map<HogQLQueryParam, String> params = new HashMap<>();
-
-        if (!(database == null || database.isEmpty()) && !ignoreDatabase) {
-            params.put(HogQLQueryParam.DATABASE, getDatabase());
-        }
-        if (user != null) {
-            params.put(HogQLQueryParam.USER, user);
-        }
-        if (password != null) {
-            params.put(HogQLQueryParam.PASSWORD, password);
-        }
-        return params;
     }
 
     private <T> T getSetting(Properties info, HogQLQueryParam param) {

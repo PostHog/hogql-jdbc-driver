@@ -11,6 +11,7 @@ public class ConnectorTest {
         System.out.println("Hello World");
 
         Driver driver = new HogQLDriver();
+
         Connection connection = driver.connect("jdbc:hogql://localhost", new Properties());
 
         ResultSet rs = connection.createStatement().executeQuery("SELECT * FROM events");
